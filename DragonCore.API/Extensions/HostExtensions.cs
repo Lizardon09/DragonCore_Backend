@@ -19,7 +19,7 @@ namespace DragonCore.API.Extensions
 			}
 			catch (System.Exception ex)
 			{
-				throw;
+				throw ex;
 			}
 		}
 

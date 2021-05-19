@@ -18,7 +18,7 @@ namespace DragonCore.API.Extensions
         {
             services.AddCors(options =>
             {
-                options.AddPolicy("CorsPolicy",
+                options.AddPolicy(Environment.GetEnvironmentVariable("CorsPolicy_Default"),
                     builder => builder.AllowAnyOrigin()
                     .AllowAnyMethod()
                     .AllowAnyHeader());

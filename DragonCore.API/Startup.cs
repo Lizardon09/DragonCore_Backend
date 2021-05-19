@@ -1,4 +1,5 @@
 using DragonCore.API.Extensions;
+using ElasticSearch.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,6 +29,7 @@ namespace DragonCore.API
         {
             services.ConfigureCors();
             services.ConfigureControllers();
+            services.ConfigureElasticSearch(Environment.GetEnvironmentVariable("Elastic_URL"), Environment.GetEnvironmentVariable("Elastic_Default_Index"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,7 +46,7 @@ namespace DragonCore.API
 
             app.UseAuthorization();
 
-            app.UseCors("CorsPolicy");
+            app.UseCors(Environment.GetEnvironmentVariable("CorsPolicy_Default"));
 
             app.UseEndpoints(endpoints =>
             {
