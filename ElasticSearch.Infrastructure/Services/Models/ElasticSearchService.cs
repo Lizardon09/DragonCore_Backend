@@ -15,7 +15,7 @@ namespace ElasticSearch.Infrastructure.Services.Models
             _elasticClient = elasticClient;
         }
 
-        private async static void CreateIndex<T>(IElasticClient client, string indexName) where T : class
+        public async static void CreateIndex<T>(IElasticClient client, string indexName) where T : class
         {
             if (!client.Indices.Exists(indexName).Exists)
             {
@@ -31,7 +31,7 @@ namespace ElasticSearch.Infrastructure.Services.Models
 
         public async Task SaveSingleAsync<T>(T item, string indexname) where T : class
         {
-            var documentExists = this.CheckDocumentExist<T>(item, indexname);
+            var documentExists = CheckDocumentExist<T>(item, indexname);
 
             if (documentExists.Result)
             {
@@ -43,7 +43,7 @@ namespace ElasticSearch.Infrastructure.Services.Models
             }
         }
 
-        public async Task<Boolean> CheckDocumentExist<T>(T item, string indexname) where T : class
+        public async Task<bool> CheckDocumentExist<T>(T item, string indexname) where T : class
         {
             var response =  await _elasticClient.DocumentExistsAsync<T>(item, d => d
                         .Index(indexname)
