@@ -10,4 +10,8 @@
     <PackageReference Include="NEST" Version="7.12.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\Interfaces\" />
+  </ItemGroup>
+
 </Project>
