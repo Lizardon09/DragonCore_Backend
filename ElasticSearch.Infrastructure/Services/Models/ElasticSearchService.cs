@@ -15,7 +15,7 @@ namespace ElasticSearch.Infrastructure.Services.Models
             _elasticClient = elasticClient;
         }
 
-        public async static void CreateIndex<T>(IElasticClient client, string indexName) where T : class
+        public async void CreateIndex<T>(IElasticClient client, string indexName) where T : class
         {
             if (!client.Indices.Exists(indexName).Exists)
             {
