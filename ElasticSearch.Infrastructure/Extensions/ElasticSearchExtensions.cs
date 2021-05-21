@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using ElasticSearch.Infrastructure.Services.Interfaces;
+using ElasticSearch.Infrastructure.Services.Models;
+using Microsoft.Extensions.DependencyInjection;
 using Nest;
 using System;
 using System.Collections.Generic;
@@ -20,8 +22,7 @@ namespace ElasticSearch.Infrastructure.Extensions
             var client = new ElasticClient(settings);
 
             services.AddSingleton(client);
-
+            services.AddScoped<IElasticSearchService, ElasticSearchService>();
         }
-
     }
 }

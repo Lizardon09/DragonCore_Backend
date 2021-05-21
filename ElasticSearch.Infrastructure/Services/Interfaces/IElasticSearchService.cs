@@ -1,0 +1,19 @@
+﻿using Elasticsearch.Net;
+using Nest;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ElasticSearch.Infrastructure.Services.Interfaces
+{
+    public interface IElasticSearchService
+    {
+        Task<IApiCallDetails> CreateIndex<T>(IElasticClient client, string indexName) where T : class;
+        Task<IApiCallDetails> SaveSingleAsync<T>(T item, string indexname) where T : class;
+        Task<IApiCallDetails> SaveManyAsync<T>(T[] items, string indexname) where T : class;
+        Task<IApiCallDetails> SaveBulkAsync<T>(T[] items, string indexname) where T : class;
+        Task<bool> CheckDocumentExist<T>(T item, string indexname) where T : class;
+        void BulkErrorLogging(BulkResponse result);
+    }
+}
