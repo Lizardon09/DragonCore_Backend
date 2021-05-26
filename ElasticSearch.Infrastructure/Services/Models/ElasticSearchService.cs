@@ -17,26 +17,26 @@ namespace ElasticSearch.Infrastructure.Services.Models
             _elasticClient = elasticClient;
         }
 
-        public async Task<IApiCallDetails> CreateIndex<T>(IElasticClient client, string indexName) where T : class
+        public async Task<IApiCallDetails> CreateIndex<T>(string indexName) where T : class
         {
-            if (!client.Indices.Exists(indexName).Exists)
+            if (!_elasticClient.Indices.Exists(indexName).Exists)
             {
-                var createIndexResponse = await client.Indices.CreateAsync(indexName,
+                var createIndexResponse = await _elasticClient.Indices.CreateAsync(indexName,
                     index => index.Map<T>(x => x.AutoMap())
                 );
                 return createIndexResponse.ApiCall;
             }
             else
             {
-                throw new ArgumentException(""); //Placeholder for better handling later
+                throw new ArgumentException(string.Format("Index {0} already exists", indexName)); //Placeholder for better handling later
             }
         }
 
         public async Task<IApiCallDetails> SaveSingleAsync<T>(T item, string indexname) where T : class
         {
-            var documentExists = CheckDocumentExist(item, indexname);
+            var documentExists = await CheckDocumentExist(item, indexname);
 
-            if (documentExists.Result)
+            if (documentExists)
             {
                 var updateDocumentResponse = await _elasticClient.UpdateAsync<T>(item, u => u.Doc(item));
                 return updateDocumentResponse.ApiCall;
@@ -48,7 +48,7 @@ namespace ElasticSearch.Infrastructure.Services.Models
             }
         }
 
-        public async Task<IApiCallDetails> SaveManyAsync<T>(T[] items, string indexname) where T: class
+        public async Task<IApiCallDetails> SaveManyAsync<T>(IEnumerable<T> items, string indexname) where T: class
         {
             var result = await _elasticClient.IndexManyAsync(items, indexname);
             if(result.Errors)
@@ -58,7 +58,7 @@ namespace ElasticSearch.Infrastructure.Services.Models
             return result.ApiCall;
         }
 
-        public async Task<IApiCallDetails> SaveBulkAsync<T>(T[] items, string indexname) where T: class
+        public async Task<IApiCallDetails> SaveBulkAsync<T>(IEnumerable<T> items, string indexname) where T: class
         {
             var result = await _elasticClient.BulkAsync(b => b.Index(indexname).IndexMany(items));
             if(result.Errors)

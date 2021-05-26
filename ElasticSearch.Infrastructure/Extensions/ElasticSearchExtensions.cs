@@ -21,7 +21,7 @@ namespace ElasticSearch.Infrastructure.Extensions
 
             var client = new ElasticClient(settings);
 
-            services.AddSingleton(client);
+            services.AddSingleton<IElasticClient>(client);
             services.AddScoped<IElasticSearchService, ElasticSearchService>();
         }
     }

@@ -3,9 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonCore.API", "DragonCore.API\DragonCore.API.csproj", "{F36D69F9-C254-4888-A372-2EF827011FB3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonCore.API", "DragonCore.API\DragonCore.API.csproj", "{F36D69F9-C254-4888-A372-2EF827011FB3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElasticSearch.Infrastructure", "ElasticSearch.Infrastructure\ElasticSearch.Infrastructure.csproj", "{1F682FFA-D478-4FA4-9419-A5A64CC72477}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElasticSearch.Infrastructure", "ElasticSearch.Infrastructure\ElasticSearch.Infrastructure.csproj", "{1F682FFA-D478-4FA4-9419-A5A64CC72477}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DragonCore", "DragonCore", "{060E2E86-A3C3-42C5-A3FA-0C775567AA7D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ElasticSearch", "ElasticSearch", "{5EC03B38-A4F2-48B9-AF79-5519AA59A7D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonCore.Domain", "DragonCore.Domain\DragonCore.Domain.csproj", "{800562CF-5693-400F-8E7C-FE1133BF534B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,9 +27,18 @@ Global
 		{1F682FFA-D478-4FA4-9419-A5A64CC72477}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F682FFA-D478-4FA4-9419-A5A64CC72477}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1F682FFA-D478-4FA4-9419-A5A64CC72477}.Release|Any CPU.Build.0 = Release|Any CPU
+		{800562CF-5693-400F-8E7C-FE1133BF534B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{800562CF-5693-400F-8E7C-FE1133BF534B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{800562CF-5693-400F-8E7C-FE1133BF534B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{800562CF-5693-400F-8E7C-FE1133BF534B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F36D69F9-C254-4888-A372-2EF827011FB3} = {060E2E86-A3C3-42C5-A3FA-0C775567AA7D}
+		{1F682FFA-D478-4FA4-9419-A5A64CC72477} = {5EC03B38-A4F2-48B9-AF79-5519AA59A7D8}
+		{800562CF-5693-400F-8E7C-FE1133BF534B} = {060E2E86-A3C3-42C5-A3FA-0C775567AA7D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {210E85EB-1105-426A-9493-E2589795AC07}

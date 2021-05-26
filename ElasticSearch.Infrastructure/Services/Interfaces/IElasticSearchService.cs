@@ -9,10 +9,10 @@ namespace ElasticSearch.Infrastructure.Services.Interfaces
 {
     public interface IElasticSearchService
     {
-        Task<IApiCallDetails> CreateIndex<T>(IElasticClient client, string indexName) where T : class;
+        Task<IApiCallDetails> CreateIndex<T>(string indexName) where T : class;
         Task<IApiCallDetails> SaveSingleAsync<T>(T item, string indexname) where T : class;
-        Task<IApiCallDetails> SaveManyAsync<T>(T[] items, string indexname) where T : class;
-        Task<IApiCallDetails> SaveBulkAsync<T>(T[] items, string indexname) where T : class;
+        Task<IApiCallDetails> SaveManyAsync<T>(IEnumerable<T> items, string indexname) where T : class;
+        Task<IApiCallDetails> SaveBulkAsync<T>(IEnumerable<T> items, string indexname) where T : class;
         Task<bool> CheckDocumentExist<T>(T item, string indexname) where T : class;
         void BulkErrorLogging(BulkResponse result);
     }
