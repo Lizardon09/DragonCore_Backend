@@ -69,7 +69,7 @@ namespace DragonCore.API.Controllers
                 var response = await _elasticClient.CreateIndex<Account>(AccountIndex);
                 if(response.Success)
                 {
-                    return Ok(response);
+                    return Ok(response.DebugInformation);
                 }
                 throw response.OriginalException;
             }
@@ -88,7 +88,7 @@ namespace DragonCore.API.Controllers
                 var response = await _elasticClient.SaveSingleAsync(TestAccount1, AccountIndex);
                 if (response.Success)
                 {
-                    return Ok(response);
+                    return Ok(response.DebugInformation);
                 }
                 throw response.OriginalException;
             }
@@ -107,7 +107,7 @@ namespace DragonCore.API.Controllers
                 var response = await _elasticClient.SaveManyAsync(Accounts, AccountIndex);
                 if (response.Success)
                 {
-                    return Ok(response);
+                    return Ok(response.DebugInformation);
                 }
                 throw response.OriginalException;
             }
@@ -126,7 +126,7 @@ namespace DragonCore.API.Controllers
                 var response = await _elasticClient.SaveBulkAsync(Accounts, AccountIndex);
                 if (response.Success)
                 {
-                    return Ok(response);
+                    return Ok(response.DebugInformation);
                 }
                 throw response.OriginalException;
             }

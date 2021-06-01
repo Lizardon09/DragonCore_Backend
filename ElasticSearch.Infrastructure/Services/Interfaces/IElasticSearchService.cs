@@ -13,7 +13,6 @@ namespace ElasticSearch.Infrastructure.Services.Interfaces
         Task<IApiCallDetails> SaveSingleAsync<T>(T item, string indexname) where T : class;
         Task<IApiCallDetails> SaveManyAsync<T>(IEnumerable<T> items, string indexname) where T : class;
         Task<IApiCallDetails> SaveBulkAsync<T>(IEnumerable<T> items, string indexname) where T : class;
-        Task<bool> CheckDocumentExist<T>(T item, string indexname) where T : class;
         void BulkErrorLogging(BulkResponse result);
     }
 }

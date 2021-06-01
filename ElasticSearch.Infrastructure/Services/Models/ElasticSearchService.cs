@@ -34,18 +34,8 @@ namespace ElasticSearch.Infrastructure.Services.Models
 
         public async Task<IApiCallDetails> SaveSingleAsync<T>(T item, string indexname) where T : class
         {
-            var documentExists = await CheckDocumentExist(item, indexname);
-
-            if (documentExists)
-            {
-                var updateDocumentResponse = await _elasticClient.UpdateAsync<T>(item, u => u.Doc(item));
-                return updateDocumentResponse.ApiCall;
-            }
-            else
-            {
-                var saveDocumentResponse = await _elasticClient.IndexDocumentAsync(item);
-                return saveDocumentResponse.ApiCall;
-            }
+            var saveDocumentResponse = await _elasticClient.IndexAsync(item, i => i.Index(indexname));
+            return saveDocumentResponse.ApiCall;
         }
 
         public async Task<IApiCallDetails> SaveManyAsync<T>(IEnumerable<T> items, string indexname) where T: class
@@ -68,15 +58,6 @@ namespace ElasticSearch.Infrastructure.Services.Models
             return result.ApiCall;
         }
 
-        public async Task<bool> CheckDocumentExist<T>(T item, string indexname) where T : class
-        {
-            var response =  await _elasticClient.DocumentExistsAsync<T>(item, d => d
-                        .Index(indexname)
-                        );
-
-            return response.Exists;
-        }
-
         public void BulkErrorLogging(BulkResponse result)
         {
             foreach (var itemWithError in result.ItemsWithErrors)
@@ -84,7 +65,6 @@ namespace ElasticSearch.Infrastructure.Services.Models
                 // Log here errors for each item OR find better refactor for Bulk Logging indexing
                 //Method to be converted to asynchronous for logging
             }
-
         }
     }
 }
