@@ -1,4 +1,5 @@
 ﻿using DragonCore.Domain.Models;
+using ElasticSearch.Domain.Models;
 using ElasticSearch.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -61,6 +62,34 @@ namespace DragonCore.API.Controllers
         }
 
         [HttpGet]
+        [Route("SearchAccount")]
+        public async Task<IActionResult> SearchAccount()
+        {
+            try
+            {
+
+                var searchDescriptor = new SearchSingleQuery<Account>(AccountIndex);
+
+                var property = "accountId";
+
+                searchDescriptor.AddShouldMatchCondtion(property, 2);
+
+                searchDescriptor.AddShouldMatchCondtion(property, 1);
+
+                var response = await _elasticClient.SearchAsync(searchDescriptor.QueryDescripter);
+                if(response?.Count() > 0)
+                {
+                    return Ok(response);
+                }
+                return NotFound("AccountId: ");
+            }
+            catch(Exception ex)
+            {
+                return BadRequest("Error Occured: " + ex);
+            }
+        }
+
+        [HttpGet]
         [Route("CreateElasticIndex")]
         public async Task<IActionResult> CreateElasticIndex()
         {
@@ -85,7 +114,7 @@ namespace DragonCore.API.Controllers
         {
             try
             {
-                var response = await _elasticClient.SaveSingleAsync(TestAccount1, AccountIndex);
+                var response = await _elasticClient.SaveSingleAsync(TestAccount2, AccountIndex);
                 if (response.Success)
                 {
                     return Ok(response.DebugInformation);

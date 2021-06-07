@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DragonCore.Domain\DragonCore.Domain.csproj" />
+    <ProjectReference Include="..\ElasticSearch.Domain\ElasticSearch.Domain.csproj" />
     <ProjectReference Include="..\ElasticSearch.Infrastructure\ElasticSearch.Infrastructure.csproj" />
   </ItemGroup>
 
