@@ -68,7 +68,7 @@ namespace DragonCore.API.Controllers
             try
             {
 
-                var searchDescriptor = new SearchSingleQuery<Account>(AccountIndex);
+                var searchDescriptor = new SearchQuery<Account>(AccountIndex);
 
                 var property = "accountId";
 
@@ -77,6 +77,7 @@ namespace DragonCore.API.Controllers
                 searchDescriptor.AddShouldMatchCondtion(property, 1);
 
                 var response = await _elasticClient.SearchAsync(searchDescriptor.QueryDescripter);
+
                 if(response?.Count() > 0)
                 {
                     return Ok(response);

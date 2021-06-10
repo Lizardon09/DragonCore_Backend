@@ -13,6 +13,8 @@ namespace ElasticSearch.Domain.Models
         protected BoolQuery BoolQuery { get; set; }
         protected List<QueryContainer> BoolMust { get; set; }
         protected List<QueryContainer> BoolShould { get; set; }
+        protected List<QueryContainer> BoolMustNot { get; set; }
+        protected List<QueryContainer> BoolShouldNot { get; set; }
 
         public ElasticQuery()
         {
@@ -22,40 +24,6 @@ namespace ElasticSearch.Domain.Models
             this.BoolShould = new List<QueryContainer>();
         }
 
-        public void AddMustMatchConditon<G>(Field field, G value)
-        {
-            this.BoolMust.Add(
-                new MatchQuery()
-                {
-                    Field = field,
-                    Query = value.ToString()
-                }
-            );
-
-            this.UpdateContainers();
-        }
-
-        public void AddShouldMatchCondtion<G>(Field field, G value)
-        {
-            this.BoolShould.Add(
-                new MatchQuery()
-                {
-                    Field = field,
-                    Query = value.ToString()
-                }
-            );
-
-            this.UpdateContainers();
-        }
-
-        public void UpdateContainers()
-        {
-            this.BoolQuery.Must = this.BoolMust;
-            this.BoolQuery.Should = this.BoolShould;
-
-            this.BaseQueryContainer &= this.BoolQuery;
-        }
-
-        public abstract IRequest GetQuery();
+        public abstract void UpdateContainers();
     }
 }
