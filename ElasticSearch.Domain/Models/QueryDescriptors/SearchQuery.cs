@@ -6,18 +6,28 @@ using System.Text;
 
 namespace ElasticSearch.Domain.Models
 {
-    public class SearchQuery<T> : ElasticQuery<T>, 
-                                  ISearchQuery<T> where T : class
+    public class SearchQuery<T> : ISearchQuery<T> where T : class
     {
         public SearchDescriptor<T> QueryDescripter { get { return this.GetQuery(); } set { } }
+        protected QueryContainer BaseQueryContainer { get; set; }
+        protected BoolQuery BoolQuery { get; set; }
+        protected List<QueryContainer> BoolMust { get; set; }
+        protected List<QueryContainer> BoolShould { get; set; }
+        protected List<QueryContainer> BoolMustNot { get; set; }
+        protected List<QueryContainer> BoolShouldNot { get; set; }
+        protected IdsQuery IdsQuery { get; set; }
 
-        public SearchQuery(string indexName) : base()
+        public SearchQuery(string indexName)
         {
-            
+            this.BaseQueryContainer = new QueryContainer();
+            this.BoolQuery = new BoolQuery();
+            this.BoolMust = new List<QueryContainer>();
+            this.BoolShould = new List<QueryContainer>();
+
+            this.IdsQuery = new IdsQuery();
+
             this.QueryDescripter = new SearchDescriptor<T>();
-
             this.QueryDescripter.Index(indexName);
-
         }
 
         public void AddMustMatchConditon<G>(Field field, G value)
@@ -59,13 +69,24 @@ namespace ElasticSearch.Domain.Models
             this.UpdateContainers();
         }
 
-        public override void UpdateContainers()
+        public void AddDocIds<G>(params G[] values)
+        {
+            this.IdsQuery = new IdsQuery()
+            {
+                Values = (IEnumerable<Id>)values.GetEnumerator()
+            };
+
+            this.UpdateContainers();
+        }
+
+        public void UpdateContainers()
         {
             this.BoolQuery.Must = this.BoolMust;
             this.BoolQuery.Should = this.BoolShould;
             this.BoolQuery.MustNot = this.BoolMustNot;
 
             this.BaseQueryContainer &= this.BoolQuery;
+            this.BaseQueryContainer &= this.IdsQuery;
         }
 
         public SearchDescriptor<T> GetQuery()

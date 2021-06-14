@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Nest;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace DragonCore.Domain.Models
 {
+    [ElasticsearchType(IdProperty = nameof(AccountId))]
     public class Account
     {
         [Display(Name = "accountId")]

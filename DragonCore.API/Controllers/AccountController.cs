@@ -76,6 +76,8 @@ namespace DragonCore.API.Controllers
 
                 searchDescriptor.AddShouldMatchCondtion(property, 1);
 
+                //searchDescriptor.AddDocIds(1,2);
+
                 var response = await _elasticClient.SearchAsync(searchDescriptor.QueryDescripter);
 
                 if(response?.Count() > 0)
@@ -115,7 +117,7 @@ namespace DragonCore.API.Controllers
         {
             try
             {
-                var response = await _elasticClient.SaveSingleAsync(TestAccount2, AccountIndex);
+                var response = await _elasticClient.SaveSingleAsync(TestAccount1, AccountIndex);
                 if (response.Success)
                 {
                     return Ok(response.DebugInformation);
