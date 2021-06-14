@@ -8,7 +8,7 @@ namespace ElasticSearch.Domain.Models
 {
     public class SearchQuery<T> : ISearchQuery<T> where T : class
     {
-        public SearchDescriptor<T> QueryDescripter { get { return this.GetQuery(); } set { } }
+        public SearchDescriptor<T> QueryDescripter { get; set; }
         protected QueryContainer BaseQueryContainer { get; set; }
         protected BoolQuery BoolQuery { get; set; }
         protected List<QueryContainer> BoolMust { get; set; }
@@ -28,6 +28,7 @@ namespace ElasticSearch.Domain.Models
 
             this.QueryDescripter = new SearchDescriptor<T>();
             this.QueryDescripter.Index(indexName);
+            this.UpdateContainers();
         }
 
         public void AddMustMatchConditon<G>(Field field, G value)
@@ -87,6 +88,7 @@ namespace ElasticSearch.Domain.Models
 
             this.BaseQueryContainer &= this.BoolQuery;
             this.BaseQueryContainer &= this.IdsQuery;
+            this.QueryDescripter.Query(q => this.BaseQueryContainer);
         }
 
         public SearchDescriptor<T> GetQuery()

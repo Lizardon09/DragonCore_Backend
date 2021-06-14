@@ -72,11 +72,11 @@ namespace DragonCore.API.Controllers
 
                 var property = "accountId";
 
-                searchDescriptor.AddShouldMatchCondtion(property, 2);
+                //searchDescriptor.AddShouldMatchCondtion(property, 2);
 
-                searchDescriptor.AddShouldMatchCondtion(property, 1);
+                //searchDescriptor.AddShouldMatchCondtion(property, 1);
 
-                //searchDescriptor.AddDocIds(1,2);
+                searchDescriptor.AddDocIds(2, 3);
 
                 var response = await _elasticClient.SearchAsync(searchDescriptor.QueryDescripter);
 
