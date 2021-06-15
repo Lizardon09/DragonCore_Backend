@@ -76,7 +76,7 @@ namespace DragonCore.API.Controllers
 
                 //searchDescriptor.AddShouldMatchCondtion(property, 1);
 
-                searchDescriptor.AddDocIds(2, 3);
+                searchDescriptor.AddDocIds(2,3);
 
                 var response = await _elasticClient.SearchAsync(searchDescriptor.QueryDescripter);
 

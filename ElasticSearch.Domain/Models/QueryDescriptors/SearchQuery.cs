@@ -70,11 +70,11 @@ namespace ElasticSearch.Domain.Models
             this.UpdateContainers();
         }
 
-        public void AddDocIds<G>(params G[] values)
+        public void AddDocIds(params Id[] values)
         {
             this.IdsQuery = new IdsQuery()
             {
-                Values = (IEnumerable<Id>)values.GetEnumerator()
+                Values = values
             };
 
             this.UpdateContainers();
