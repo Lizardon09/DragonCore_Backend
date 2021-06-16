@@ -12,7 +12,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "api/account/GetTest",
+      "launchUrl": "swagger",
       "environmentVariables": {
         "Elastic_URL": "http://localhost:9200",
         "Elastic_Default_Index": "sideproject-api",
