@@ -19,6 +19,5 @@ namespace ElasticSearch.Domain.Models.QueryDescriptors
         {
             this.QueryDescripter = this.QueryDescripter.Doc(doc);
         }
-
     }
 }

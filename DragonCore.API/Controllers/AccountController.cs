@@ -1,5 +1,6 @@
 ﻿using DragonCore.Domain.Models;
 using ElasticSearch.Domain.Models;
+using ElasticSearch.Domain.Models.QueryDescriptors;
 using ElasticSearch.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +20,7 @@ namespace DragonCore.API.Controllers
         private readonly Account TestAccount1;
         private readonly Account TestAccount2;
         private readonly List<Account> Accounts;
-        private readonly string AccountIndex = "account";
+        private readonly string AccountIndex = typeof(Account).Name.ToLowerInvariant();
 
         public AccountController(IElasticSearchService elasticClient)
         {
@@ -56,29 +57,48 @@ namespace DragonCore.API.Controllers
         [Route("GetTest")]
         public IActionResult GetTest()
         {
-
-            return Ok("Success");
-
+            return Ok("Success " + AccountIndex);
         }
 
         [HttpGet]
-        [Route("SearchAccount")]
-        public async Task<IActionResult> SearchAccount()
+        [Route("SearchAccountByMatches")]
+        public async Task<IActionResult> SearchAccountByMatches()
         {
             try
             {
-
-                var searchDescriptor = new SearchQuery<Account>(AccountIndex);
+                var searchQuery = new SearchQuery<Account>(AccountIndex);
 
                 var property = "accountId";
 
-                //searchDescriptor.AddShouldMatchCondtion(property, 2);
+                searchQuery.AddShouldMatchCondtion(property, 2);
 
-                //searchDescriptor.AddShouldMatchCondtion(property, 1);
+                searchQuery.AddShouldMatchCondtion(property, 1);
 
-                searchDescriptor.AddDocIds(2,3);
+                var response = await _elasticClient.SearchAsync(searchQuery.QueryDescripter);
 
-                var response = await _elasticClient.SearchAsync(searchDescriptor.QueryDescripter);
+                if (response?.Count() > 0)
+                {
+                    return Ok(response);
+                }
+                return NotFound("AccountId: ");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error Occured: " + ex);
+            }
+        }
+
+        [HttpGet]
+        [Route("SearchAccountByIds")]
+        public async Task<IActionResult> SearchAccountByIds()
+        {
+            try
+            {
+                var searchQuery = new SearchQuery<Account>(AccountIndex);
+
+                searchQuery.AddDocIds(2,3);
+
+                var response = await _elasticClient.SearchAsync(searchQuery.QueryDescripter);
 
                 if(response?.Count() > 0)
                 {
@@ -98,7 +118,11 @@ namespace DragonCore.API.Controllers
         {
             try
             {
-                var response = await _elasticClient.CreateIndex<Account>(AccountIndex);
+                var indexQuery = new IndexQuery<Account>(AccountIndex);
+
+                indexQuery.AutoMapIndex();
+
+                var response = await _elasticClient.CreateIndexAsync(AccountIndex, indexQuery.CreateIndexQueryDescripter);
                 if(response.Success)
                 {
                     return Ok(response.DebugInformation);
@@ -117,7 +141,10 @@ namespace DragonCore.API.Controllers
         {
             try
             {
-                var response = await _elasticClient.SaveSingleAsync(TestAccount1, AccountIndex);
+                var indexQuery = new IndexQuery<Account>(AccountIndex);
+
+                var response = await _elasticClient.IndexAsync(TestAccount1, indexQuery.IndexQueryDescripter);
+
                 if (response.Success)
                 {
                     return Ok(response.DebugInformation);
@@ -136,7 +163,11 @@ namespace DragonCore.API.Controllers
         {
             try
             {
-                var response = await _elasticClient.SaveManyAsync(Accounts, AccountIndex);
+                var bulkQuery = new BulkQuery<Account>(AccountIndex);
+
+                bulkQuery.AddCollectionToSave(Accounts);
+
+                var response = await _elasticClient.BulkAsync(bulkQuery.BulkDescriptor);
                 if (response.Success)
                 {
                     return Ok(response.DebugInformation);
@@ -148,25 +179,5 @@ namespace DragonCore.API.Controllers
                 return BadRequest("Error Occured: " + ex);
             }
         }
-
-        [HttpGet]
-        [Route("IndexBulkDocuments")]
-        public async Task<IActionResult> IndexBulkDocuments()
-        {
-            try
-            {
-                var response = await _elasticClient.SaveBulkAsync(Accounts, AccountIndex);
-                if (response.Success)
-                {
-                    return Ok(response.DebugInformation);
-                }
-                throw response.OriginalException;
-            }
-            catch (Exception ex)
-            {
-                return BadRequest("Error Occured: " + ex);
-            }
-        }
-
     }
 }

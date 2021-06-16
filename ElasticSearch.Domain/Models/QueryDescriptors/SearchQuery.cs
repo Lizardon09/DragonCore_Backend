@@ -90,10 +90,5 @@ namespace ElasticSearch.Domain.Models
             this.BaseQueryContainer &= this.IdsQuery;
             this.QueryDescripter.Query(q => this.BaseQueryContainer);
         }
-
-        public SearchDescriptor<T> GetQuery()
-        {
-            return this.QueryDescripter.Query(q => this.BaseQueryContainer);
-        }
     }
 }
