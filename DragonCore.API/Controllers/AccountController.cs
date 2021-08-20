@@ -14,9 +14,10 @@ namespace DragonCore.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountController : ControllerBase
+    public class AccountController : Controller
     {
         private readonly IElasticSearchService _elasticClient;
+        private readonly IElasticClient _elasticClient2;
         private readonly Account TestAccount1;
         private readonly Account TestAccount2;
         private readonly List<Account> Accounts;
@@ -142,6 +143,8 @@ namespace DragonCore.API.Controllers
             try
             {
                 var indexQuery = new IndexQuery<Account>(AccountIndex);
+                
+                indexQuery.DocumentId(TestAccount1.AccountId);
 
                 var response = await _elasticClient.IndexAsync(TestAccount1, indexQuery.IndexQueryDescripter);
 
@@ -168,6 +171,41 @@ namespace DragonCore.API.Controllers
                 bulkQuery.AddCollectionToSave(Accounts);
 
                 var response = await _elasticClient.BulkAsync(bulkQuery.BulkDescriptor);
+                if (response.Success)
+                {
+                    return Ok(response.DebugInformation);
+                }
+                throw response.OriginalException;
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error Occured: " + ex);
+            }
+        }
+
+        [HttpGet]
+        [Route("UpdateDocument")]
+        public async Task<IActionResult> UpdateDocument()
+        {
+            try
+            {
+                var updateQuery = new UpdateQuery<Account>(AccountIndex, TestAccount1.AccountId);
+
+                updateQuery.EnableDocAsUpsert();
+                updateQuery.EnableElasticShardRefresh();
+
+                updateQuery.UpdateDocument(TestAccount2);
+
+
+                //var response = await _elasticClient2.UpdateAsync<object>(TestAccount1.AccountId, u => u
+                //.Index(AccountIndex)
+                //.Doc(TestAccount1)
+                //.DocAsUpsert()
+                //.Refresh(Elasticsearch.Net.Refresh.True)
+                //);
+
+                var response = await _elasticClient.UpdateAsync(updateQuery.QueryDescripter);
+
                 if (response.Success)
                 {
                     return Ok(response.DebugInformation);

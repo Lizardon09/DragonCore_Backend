@@ -20,13 +20,19 @@ namespace ElasticSearch.Domain.Models.QueryDescriptors
             this.CreateIndexQueryDescripter = new CreateIndexDescriptor(indexName);
             this.IndexQueryDescripter = new IndexDescriptor<T>();
 
-            this.IndexQueryDescripter.Index(indexName);
+            this.IndexQueryDescripter = this.IndexQueryDescripter.Index(indexName);
         }
+
 
         public void AutoMapIndex()
         {
-            this.TypeMappingDescriptor.AutoMap();
+            this.TypeMappingDescriptor = this.TypeMappingDescriptor.AutoMap();
             this.UpdateContainers();
+        }
+
+        public void DocumentId(Id id)
+        {
+            this.IndexQueryDescripter = this.IndexQueryDescripter.Id(id);
         }
 
         public void UpdateContainers()

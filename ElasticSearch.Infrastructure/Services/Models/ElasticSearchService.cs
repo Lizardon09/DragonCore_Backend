@@ -20,13 +20,13 @@ namespace ElasticSearch.Infrastructure.Services.Models
 
         public async Task<IApiCallDetails> IndexAsync<T>(T item, IndexDescriptor<T> indexDescriptor) where T : class
         {
-            var result = await _elasticClient.IndexAsync(item, i => indexDescriptor);
+            var result = await _elasticClient.IndexAsync(item, indexDescriptor => indexDescriptor);
             return result.ApiCall;
         }
 
         public async Task<IApiCallDetails> CreateIndexAsync(string indexname, CreateIndexDescriptor createIndexDescriptor)
         {
-            var result = await _elasticClient.Indices.CreateAsync(indexname, c => createIndexDescriptor);
+            var result = await _elasticClient.Indices.CreateAsync(indexname, createIndexDescriptor => createIndexDescriptor);
             return result.ApiCall;
         }
 

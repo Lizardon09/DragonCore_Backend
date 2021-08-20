@@ -8,16 +8,27 @@ namespace ElasticSearch.Domain.Models.QueryDescriptors
 {
     public class UpdateQuery<T> : IUpdateQuery<T> where T : class
     {
-        public UpdateDescriptor<T,object> QueryDescripter { get; set; }
+        public UpdateDescriptor<object, object> QueryDescripter { get; set; }
 
-        public UpdateQuery(string indexName, string id)
+        public UpdateQuery(string indexName, Nest.Id id)
         {
-            this.QueryDescripter = new UpdateDescriptor<T,object>(indexName,id);
+            this.QueryDescripter = new UpdateDescriptor<object,object>(id);
+            this.QueryDescripter = this.QueryDescripter.Index(indexName);
         }
-
+        
         public void UpdateDocument(object doc)
         {
             this.QueryDescripter = this.QueryDescripter.Doc(doc);
+        }
+
+        public void EnableElasticShardRefresh()
+        {
+            this.QueryDescripter = this.QueryDescripter.Refresh(Elasticsearch.Net.Refresh.True);
+        }
+
+        public void EnableDocAsUpsert()
+        {
+            this.QueryDescripter = this.QueryDescripter.DocAsUpsert();
         }
     }
 }
