@@ -32,9 +32,9 @@ namespace DragonCore.API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "DragonCore API", Version = "v1" });
             });
-            services.ConfigureCors();
+            services.ConfigureCors(Configuration);
             services.ConfigureControllers();
-            services.ConfigureElasticSearch(Environment.GetEnvironmentVariable("Elastic_URL"), Environment.GetEnvironmentVariable("Elastic_Default_Index"));
+            services.ConfigureElasticSearch(Configuration.GetSection("Elastic_URL").Get<string>(), Configuration.GetSection("Elastic_Default_Index").Get<string>());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,7 +58,7 @@ namespace DragonCore.API
 
             app.UseAuthorization();
 
-            app.UseCors(Environment.GetEnvironmentVariable("CorsPolicy_Default"));
+            app.UseCors(Configuration.GetSection("CorsPolicy_Default").Get<string>());
 
             app.UseEndpoints(endpoints =>
             {

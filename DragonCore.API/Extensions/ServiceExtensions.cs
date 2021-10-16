@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -14,11 +15,11 @@ namespace DragonCore.API.Extensions
             services.AddControllers();
         }
 
-        public static void ConfigureCors(this IServiceCollection services)
+        public static void ConfigureCors(this IServiceCollection services, IConfiguration Configuration)
         {
             services.AddCors(options =>
             {
-                options.AddPolicy(Environment.GetEnvironmentVariable("CorsPolicy_Default"),
+                options.AddPolicy(Configuration.GetSection("CorsPolicy_Default").Get<string>(),
                     builder => builder.AllowAnyOrigin()
                     .AllowAnyMethod()
                     .AllowAnyHeader());
