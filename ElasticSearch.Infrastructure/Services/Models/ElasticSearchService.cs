@@ -32,7 +32,7 @@ namespace ElasticSearch.Infrastructure.Services.Models
 
         public async Task<IApiCallDetails> CreateIndexAsync(string indexname, CreateIndexDescriptor createIndexDescriptor)
         {
-            var result = await _elasticClient.Indices.CreateAsync(indexname, createIndexDescriptor => createIndexDescriptor);
+            var result = await _elasticClient.Indices.CreateAsync(indexname, cid => createIndexDescriptor);
             return result.ApiCall;
         }
 
