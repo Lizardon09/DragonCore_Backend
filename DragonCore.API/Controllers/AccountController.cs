@@ -17,7 +17,6 @@ namespace DragonCore.API.Controllers
     public class AccountController : Controller
     {
         private readonly IElasticSearchService _elasticClient;
-        private readonly IElasticClient _elasticClient2;
         private readonly Account TestAccount1;
         private readonly Account TestAccount2;
         private readonly List<Account> Accounts;
@@ -77,14 +76,12 @@ namespace DragonCore.API.Controllers
 
                 var response = await _elasticClient.SearchAsync(searchQuery.QueryDescripter);
 
-                if (response?.Count() > 0)
-                {
-                    return Ok(response);
-                }
-                return NotFound("AccountId: ");
+                return (response?.Count() > 0) ? Ok(response) : NotFound("AccountId: 1, 2");
+
             }
             catch (Exception ex)
             {
+               
                 return BadRequest("Error Occured: " + ex);
             }
         }
@@ -101,11 +98,7 @@ namespace DragonCore.API.Controllers
 
                 var response = await _elasticClient.SearchAsync(searchQuery.QueryDescripter);
 
-                if(response?.Count() > 0)
-                {
-                    return Ok(response);
-                }
-                return NotFound("AccountId: ");
+                return (response?.Count() > 0) ? Ok(response) : NotFound("AccountId: ");
             }
             catch(Exception ex)
             {
@@ -124,11 +117,8 @@ namespace DragonCore.API.Controllers
                 indexQuery.AutoMapIndex();
 
                 var response = await _elasticClient.CreateIndexAsync(AccountIndex, indexQuery.CreateIndexQueryDescripter);
-                if(response.Success)
-                {
-                    return Ok(response.DebugInformation);
-                }
-                throw response.OriginalException;
+
+                return (response.Success) ? Ok(response.DebugInformation) : BadRequest(response.OriginalException);
             }
             catch(Exception ex)
             {
@@ -148,11 +138,7 @@ namespace DragonCore.API.Controllers
 
                 var response = await _elasticClient.IndexAsync(TestAccount1, indexQuery.IndexQueryDescripter);
 
-                if (response.Success)
-                {
-                    return Ok(response.DebugInformation);
-                }
-                throw response.OriginalException;
+                return (response.Success) ? Ok(response.DebugInformation) : BadRequest(response.OriginalException);
             }
             catch (Exception ex)
             {
@@ -171,11 +157,8 @@ namespace DragonCore.API.Controllers
                 bulkQuery.AddCollectionToSave(Accounts);
 
                 var response = await _elasticClient.BulkAsync(bulkQuery.BulkDescriptor);
-                if (response.Success)
-                {
-                    return Ok(response.DebugInformation);
-                }
-                throw response.OriginalException;
+
+                return (response.Success) ? Ok(response.DebugInformation) : BadRequest(response.OriginalException);
             }
             catch (Exception ex)
             {
@@ -206,11 +189,7 @@ namespace DragonCore.API.Controllers
 
                 var response = await _elasticClient.UpdateAsync(updateQuery.QueryDescripter);
 
-                if (response.Success)
-                {
-                    return Ok(response.DebugInformation);
-                }
-                throw response.OriginalException;
+                return (response.Success) ? Ok(response.DebugInformation) : BadRequest(response.OriginalException);
             }
             catch (Exception ex)
             {

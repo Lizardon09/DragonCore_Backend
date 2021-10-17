@@ -21,5 +21,5 @@ ENTRYPOINT [ "dotnet", "DragonCore.API.dll" ]
 
 ## Instructions
 
-# 1. Run docker build -t dragoncore -f dev.dockerfile .
-# 2. Run docker run -d --name dragoncore-api -p 44314:44314 dragoncore
+# 1. Run docker build -t lizardon/dragoncore-api -f dev.dockerfile .
+# 2. Run docker run -d --name dragoncore-api -p 44314:44314 lizardon/dragoncore-api

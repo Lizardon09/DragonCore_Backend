@@ -18,6 +18,12 @@ namespace ElasticSearch.Infrastructure.Services.Models
             _elasticClient = elasticClient;
         }
 
+        public async Task<IApiCallDetails> TestConnectionAsync()
+        {
+            var result = await _elasticClient.PingAsync();
+            return result.ApiCall;
+        }
+
         public async Task<IApiCallDetails> IndexAsync<T>(T item, IndexDescriptor<T> indexDescriptor) where T : class
         {
             var result = await _elasticClient.IndexAsync(item, indexDescriptor => indexDescriptor);
