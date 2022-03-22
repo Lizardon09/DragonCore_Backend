@@ -1,11 +1,12 @@
-FROM mcr.microsoft.com/dotnet/core/aspnet AS base
+FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
 WORKDIR /app
 
-FROM mcr.microsoft.com/dotnet/core/sdk AS build
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
 COPY ["./", "./"]
 RUN dotnet restore "./DragonCore.API/DragonCore.API.csproj"
 COPY . .
+RUN ls
 WORKDIR "/src/."
 RUN dotnet build "./DragonCore.API/DragonCore.API.csproj" -c Release -o /app
 
