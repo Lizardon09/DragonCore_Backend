@@ -1,8 +1,8 @@
 #!/bin/bash
 
-source ./scripts/elastic-config.sh
+source ./scripts/elastic_sub_scripts/elastic-config.sh
 
-echo -e "\n Image cleanup ... \n\n"
+echo -e "\nImage cleanup ... \n\n"
 
 if [[ "$(docker ps -a --filter name="$elasticContianerName" | wc -l)" -gt 1 || "$(docker ps -a --filter name="$kibanaContainerName" | wc -l)" -gt 1 ]]; then
     echo -e "Error!!! Containers still exist. Remove those first..."
@@ -16,6 +16,6 @@ else
 	docker rmi $kibanaRemoteImage
 	echo -e "\n\nRemoved 'kibana-image'!"
 
-	echo -e "\n\n Done image cleanup!"
+	echo -e "\n\nDone image cleanup!"
 fi
 

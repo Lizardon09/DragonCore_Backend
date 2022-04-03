@@ -1,8 +1,8 @@
 #!/bin/bash
 
-source ./scripts/elastic-config.sh
+source ./scripts/elastic_sub_scripts/elastic-config.sh
 
-echo -e "\n\n Proceeding with container cleanup: \n\n"
+echo -e "\n\nProceeding with container cleanup: \n\n"
   
 # remove existing dragoncore-elastic container if it exists
 
@@ -22,4 +22,4 @@ else
 	echo -e "$kibanaContainerName container does not exist"
 fi
 
-echo -e "\n\n Container cleanup done!"
+echo -e "\n\nContainer cleanup done!"

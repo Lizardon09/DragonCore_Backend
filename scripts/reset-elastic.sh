@@ -1,12 +1,8 @@
 #!/bin/bash
 
-# set max heap count for elastic container
+# show global variables
 
-echo -e "\n\nNOTE: Ensure 'vm.max_map_count=262144' for elastic container, as required!!! Otherwise the elastic container will stop!!!"
-
-# shopw global variables
-
-source ./scripts/elastic-config.sh
+source ./scripts/elastic_sub_scripts/elastic-config.sh
 
 echo -e "\nGlobal variables:\n"
 
@@ -20,16 +16,22 @@ echo -e "kibanaRemoteImage = $kibanaRemoteImage \n"
 
 echo -e "elasticNetworkName = $elasticNetworkName \n"
 
+echo -e "vm_max_map_count = $vm_max_map_count \n"
+
+# set max heap count for elastic container
+
+sh ./scripts/elastic_sub_scripts/elastic-heap-setup.sh
+
 # preliminary remove existing conatiners and images
 
-sh ./scripts/remove-elastic-containers.sh
+sh ./scripts/elastic_sub_scripts/remove-elastic-containers.sh
 
-sh ./scripts/remove-elastic-images.sh
+sh ./scripts/elastic_sub_scripts/remove-elastic-images.sh
 
 # create elastic network if it doesnt exist
 
-sh ./scripts/setup-elastic-netowrk.sh
+sh ./scripts/elastic_sub_scripts/setup-elastic-network.sh
 
 # create elastic containers
 
-sh ./scripts/setup-elastic-containers.sh
+sh ./scripts/elastic_sub_scripts/setup-elastic-containers.sh

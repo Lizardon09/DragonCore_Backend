@@ -9,3 +9,5 @@ kibanaImageName="kibana-image"
 kibanaRemoteImage="docker.elastic.co/kibana/kibana:8.1.1"
 
 elasticNetworkName="dragoncore-elastic-network"
+
+vm_max_map_count=262144
