@@ -4,6 +4,8 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
 COPY ["./", "./"]
+RUN dotnet dev-certs https -ep %USERPROFILE%\.aspnet\https\aspnetapp.pfx -p Croagunk1!
+RUN dotnet dev-certs https --trust
 RUN dotnet restore "./DragonCore.API/DragonCore.API.csproj"
 COPY . .
 WORKDIR "/src/."

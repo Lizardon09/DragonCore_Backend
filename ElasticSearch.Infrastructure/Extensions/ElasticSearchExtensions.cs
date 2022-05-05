@@ -10,7 +10,7 @@ namespace ElasticSearch.Infrastructure.Extensions
 {
     public static class ElasticSearchExtensions
     {
-        public static void ConfigureElasticSearch2(this IServiceCollection services, ConnectionSettings connectionSettings)
+        public static void ConfigureElasticSearch(this IServiceCollection services, ConnectionSettings connectionSettings)
         {
             var settings = connectionSettings;
 

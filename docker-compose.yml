@@ -1,11 +1,11 @@
-version: "1.0"
+version: "2.2"
 
 services:
     setup:
         image: docker.elastic.co/elasticsearch/elasticsearch:${ELASTIC_STACK_VERSION}
         container_name: "dragoncore_backend_setup"
         volumes:
-            - certs:/usr/share/elasticsearch/config/certs
+            - dragoncore_certs:/usr/share/elasticsearch/config/certs
         networks:
             - dragoncore_backend_network
         user: "0"
@@ -62,7 +62,7 @@ services:
         networks:
             - dragoncore_backend_network
         volumes:
-          - certs:/usr/share/elasticsearch/config/certs
+          - dragoncore_certs:/usr/share/elasticsearch/config/certs
           - dragoncoreElastic_data:/usr/share/elasticsearch/data
         ports:
           - ${ES_PORT}:9200
@@ -106,7 +106,7 @@ services:
         networks:
             - dragoncore_backend_network
         volumes:
-          - certs:/usr/share/kibana/config/certs
+          - dragoncore_certs:/usr/share/kibana/config/certs
           - dragoncoreKibana_data:/usr/share/kibana/data
         ports:
           - ${KIBANA_PORT}:5601
@@ -127,10 +127,34 @@ services:
           timeout: 10s
           retries: 120
           
+    dragoncoreBackend:
+        depends_on:
+            dragoncoreKibana:
+                condition: service_healthy
+            dragoncoreElastic:
+                condition: service_healthy
+        build: 
+            context: .
+            dockerfile: DragonCore.API/Dockerfile
+        image: ${DOCKER_REGISTRY-}dragoncorebackend
+        container_name: "dragoncoreBackend"
+        networks:
+            - dragoncore_backend_network
+        volumes:
+         - dragoncore_certs:/usr/share/dragoncore/config/certs
+         - dragoncoreBackend_data:/usr/share/dragoncore/data
+        environment:
+         - ASPNETCORE_ENVIRONMENT=Development
+         - ASPNETCORE_Kestrel__Certificates__Default__Password=Croagunk1!
+         - ASPNETCORE_Kestrel__Certificates__Default__Path=~/app/certs/dragoncoreBackend.pfx
+          
 volumes:
-  certs:
+  dragoncore_certs:
     driver: local
     name: dragoncore_certs
+  dragoncoreBackend_data:
+    driver: local
+    name: dragoncoreBackend_data
   dragoncoreElastic_data:
     driver: local
     name: dragoncoreElastic_data

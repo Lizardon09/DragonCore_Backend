@@ -39,7 +39,7 @@ namespace DragonCore.API
                 .ServerCertificateValidationCallback(CertificateValidations.AuthorityIsRoot(new X509Certificate(Configuration.GetSection("Elastic").GetSection("Elastic_CA_Path").Get<string>())))
                 .BasicAuthentication(Configuration.GetSection("Elastic").GetSection("Elastic_User").Get<string>(), Configuration.GetSection("Elastic").GetSection("Elastic_Password").Get<string>());
 
-            services.ConfigureElasticSearch2(elasticConnectionSettings);
+            services.ConfigureElasticSearch(elasticConnectionSettings);
 
         }
 
