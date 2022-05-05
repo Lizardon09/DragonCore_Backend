@@ -1,27 +1,31 @@
 FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
+
 WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+
 WORKDIR /src
-COPY ["./", "./"]
-RUN dotnet dev-certs https -ep %USERPROFILE%\.aspnet\https\aspnetapp.pfx -p Croagunk1!
+COPY ["./DragonCore.API/DragonCore.API.csproj", "DragonCore.API/"]
+COPY ["./ElasticSearch.Infrastructure/ElasticSearch.Infrastructure.csproj", "ElasticSearch.Infrastructure/"]
+COPY ["./ElasticSearch.Domain/ElasticSearch.Domain.csproj", "ElasticSearch.Domain/"]
+COPY ["./DragonCore.Domain/DragonCore.Domain.csproj", "DragonCore.Domain/"]
+
+RUN dotnet dev-certs https --clean
+RUN dotnet dev-certs https -ep devcerts/DragonCore.API.pfx -p Croagunk1!
 RUN dotnet dev-certs https --trust
+
 RUN dotnet restore "./DragonCore.API/DragonCore.API.csproj"
 COPY . .
-WORKDIR "/src/."
-RUN dotnet build "./DragonCore.API/DragonCore.API.csproj" -c Release -o /app
+WORKDIR "/src/DragonCore.API"
+RUN dotnet build "DragonCore.API.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "./DragonCore.API/DragonCore.API.csproj" -c Release -o /app
+RUN dotnet publish "DragonCore.API.csproj" -c Release -o /app/publish
 
 FROM base AS final
 ENV ASPNETCORE_URLS="http://*:44314"
 EXPOSE 44314
 WORKDIR /app
-COPY --from=publish /app .
-ENTRYPOINT [ "dotnet", "DragonCore.API.dll" ]
-
-## Instructions
-
-# 1. Run docker build -t lizardon/dragoncore-api -f dev.dockerfile .
-# 2. Run docker run -d --name dragoncore-api -p 44314:44314 lizardon/dragoncore-api
+COPY --from=publish /app/publish .
+COPY --from=publish /src/devcerts/DragonCore.API.pfx ./certs/
+ENTRYPOINT ["dotnet", "DragonCore.API.dll"]

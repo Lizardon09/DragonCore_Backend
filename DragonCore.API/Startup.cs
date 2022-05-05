@@ -32,6 +32,7 @@ namespace DragonCore.API
             services.ConfigureCors(Configuration);
             services.ConfigureControllers();
 
+
             var elasticConnectionSettings = new ConnectionSettings(new Uri(
                 Configuration.GetSection("Elastic").GetSection("Elastic_URL").Get<string>()
                 ))

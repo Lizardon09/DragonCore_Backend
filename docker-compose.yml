@@ -133,9 +133,9 @@ services:
                 condition: service_healthy
             dragoncoreElastic:
                 condition: service_healthy
-        build: 
+        build:
             context: .
-            dockerfile: DragonCore.API/Dockerfile
+            dockerfile: dev.dockerfile
         image: ${DOCKER_REGISTRY-}dragoncorebackend
         container_name: "dragoncoreBackend"
         networks:
@@ -143,10 +143,12 @@ services:
         volumes:
          - dragoncore_certs:/usr/share/dragoncore/config/certs
          - dragoncoreBackend_data:/usr/share/dragoncore/data
+        ports:
+          - ${DRAGONCORE_BACKEND_PORT}:44314
         environment:
          - ASPNETCORE_ENVIRONMENT=Development
          - ASPNETCORE_Kestrel__Certificates__Default__Password=Croagunk1!
-         - ASPNETCORE_Kestrel__Certificates__Default__Path=~/app/certs/dragoncoreBackend.pfx
+         - ASPNETCORE_Kestrel__Certificates__Default__Path=certs/DragonCore.API.pfx
           
 volumes:
   dragoncore_certs:
