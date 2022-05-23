@@ -1,4 +1,6 @@
-﻿using DragonCore.Domain.Models;
+﻿using BasicHelpers.Infrastructure.Services.Interfaces;
+using BasicHelpers.Infrastructure.Services.Models;
+using DragonCore.Domain.Models;
 using ElasticSearch.Domain.Models;
 using ElasticSearch.Domain.Models.QueryDescriptors;
 using ElasticSearch.Infrastructure.Services.Interfaces;

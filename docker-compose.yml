@@ -54,6 +54,7 @@ services:
           retries: 120
           
     dragoncoreElastic:
+        profiles: ["elastic"]
         depends_on:
             setup:
                 condition: service_healthy
@@ -98,6 +99,7 @@ services:
           retries: 120
           
     dragoncoreKibana:
+        profiles: ["elastic"]
         depends_on:
             dragoncoreElastic:
                 condition: service_healthy
@@ -128,6 +130,7 @@ services:
           retries: 120
           
     dragoncoreBackend:
+        profiles: ["backend"]
         depends_on:
             dragoncoreKibana:
                 condition: service_healthy

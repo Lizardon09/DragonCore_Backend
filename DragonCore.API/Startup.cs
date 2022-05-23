@@ -10,6 +10,9 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Security.Cryptography.X509Certificates;
 using Nest;
+using BasicHelpers.Infrastructure.Extensions;
+using BasicHelpers.Infrastructure.Settings;
+using System.IO;
 
 namespace DragonCore.API
 {
@@ -32,7 +35,6 @@ namespace DragonCore.API
             services.ConfigureCors(Configuration);
             services.ConfigureControllers();
 
-
             var elasticConnectionSettings = new ConnectionSettings(new Uri(
                 Configuration.GetSection("Elastic").GetSection("Elastic_URL").Get<string>()
                 ))
@@ -41,6 +43,11 @@ namespace DragonCore.API
                 .BasicAuthentication(Configuration.GetSection("Elastic").GetSection("Elastic_User").Get<string>(), Configuration.GetSection("Elastic").GetSection("Elastic_Password").Get<string>());
 
             services.ConfigureElasticSearch(elasticConnectionSettings);
+
+            services.ConfigureBasicHelpers(
+                new BasicHelperSettings()
+                    .IOHelper()
+            );
 
         }
 
