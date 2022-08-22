@@ -1,4 +1,6 @@
-﻿using DragonCore.Domain.Models;
+﻿using BasicHelpers.Infrastructure.Services.Interfaces;
+using BasicHelpers.Infrastructure.Services.Models;
+using DragonCore.Domain.Models;
 using ElasticSearch.Domain.Models;
 using ElasticSearch.Domain.Models.QueryDescriptors;
 using ElasticSearch.Infrastructure.Services.Interfaces;
@@ -14,7 +16,7 @@ namespace DragonCore.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountController : ControllerBase
+    public class AccountController : Controller
     {
         private readonly IElasticSearchService _elasticClient;
         private readonly Account TestAccount1;
@@ -76,14 +78,12 @@ namespace DragonCore.API.Controllers
 
                 var response = await _elasticClient.SearchAsync(searchQuery.QueryDescripter);
 
-                if (response?.Count() > 0)
-                {
-                    return Ok(response);
-                }
-                return NotFound("AccountId: ");
+                return (response?.Count() > 0) ? Ok(response) : NotFound("AccountId: 1, 2");
+
             }
             catch (Exception ex)
             {
+               
                 return BadRequest("Error Occured: " + ex);
             }
         }
@@ -100,11 +100,7 @@ namespace DragonCore.API.Controllers
 
                 var response = await _elasticClient.SearchAsync(searchQuery.QueryDescripter);
 
-                if(response?.Count() > 0)
-                {
-                    return Ok(response);
-                }
-                return NotFound("AccountId: ");
+                return (response?.Count() > 0) ? Ok(response) : NotFound("AccountId: ");
             }
             catch(Exception ex)
             {
@@ -123,11 +119,8 @@ namespace DragonCore.API.Controllers
                 indexQuery.AutoMapIndex();
 
                 var response = await _elasticClient.CreateIndexAsync(AccountIndex, indexQuery.CreateIndexQueryDescripter);
-                if(response.Success)
-                {
-                    return Ok(response.DebugInformation);
-                }
-                throw response.OriginalException;
+
+                return (response.Success) ? Ok(response.DebugInformation) : BadRequest(response.OriginalException);
             }
             catch(Exception ex)
             {
@@ -142,14 +135,12 @@ namespace DragonCore.API.Controllers
             try
             {
                 var indexQuery = new IndexQuery<Account>(AccountIndex);
+                
+                indexQuery.DocumentId(TestAccount1.AccountId);
 
                 var response = await _elasticClient.IndexAsync(TestAccount1, indexQuery.IndexQueryDescripter);
 
-                if (response.Success)
-                {
-                    return Ok(response.DebugInformation);
-                }
-                throw response.OriginalException;
+                return (response.Success) ? Ok(response.DebugInformation) : BadRequest(response.OriginalException);
             }
             catch (Exception ex)
             {
@@ -165,14 +156,65 @@ namespace DragonCore.API.Controllers
             {
                 var bulkQuery = new BulkQuery<Account>(AccountIndex);
 
-                bulkQuery.AddCollectionToSave(Accounts);
+                bulkQuery.AddCollectionToSave(Accounts, "AccountId");
 
                 var response = await _elasticClient.BulkAsync(bulkQuery.BulkDescriptor);
-                if (response.Success)
-                {
-                    return Ok(response.DebugInformation);
-                }
-                throw response.OriginalException;
+
+                return (response.Success) ? Ok(response.DebugInformation) : BadRequest(response.OriginalException);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error Occured: " + ex);
+            }
+        }
+
+
+        [HttpGet]
+        [Route("DeleteManyDocuments")]
+        public async Task<IActionResult> DeleteManyDocuments()
+        {
+            try
+            {
+                var bulkQuery = new BulkQuery<Account>(AccountIndex);
+
+                bulkQuery.AddCollectionToDelete(Accounts);
+
+                typeof(Account).GetProperty("AccountId");
+
+                var response = await _elasticClient.BulkAsync(bulkQuery.BulkDescriptor);
+
+                return (response.Success) ? Ok(response.DebugInformation) : BadRequest(response.OriginalException);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error Occured: " + ex);
+            }
+        }
+
+        [HttpGet]
+        [Route("UpdateDocument")]
+        public async Task<IActionResult> UpdateDocument()
+        {
+            try
+            {
+                var updateQuery = new UpdateQuery<Account>(AccountIndex, TestAccount1.AccountId);
+
+                updateQuery.EnableDocAsUpsert();
+                updateQuery.EnableElasticShardRefresh();
+
+                updateQuery.UpdateDocument(TestAccount2);
+
+
+                //var response = await _elasticClient2.UpdateAsync<object>(TestAccount1.AccountId, u => u
+                //.Index(AccountIndex)
+                //.Doc(TestAccount1)
+                //.DocAsUpsert()
+                //.Refresh(Elasticsearch.Net.Refresh.True)
+                //);
+
+                var response = await _elasticClient.UpdateAsync(updateQuery.QueryDescripter);
+
+                return (response.Success) ? Ok(response.DebugInformation) : BadRequest(response.OriginalException);
             }
             catch (Exception ex)
             {

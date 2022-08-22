@@ -10,6 +10,7 @@ namespace ElasticSearch.Infrastructure.Services.Interfaces
 {
     public interface IElasticSearchService
     {
+        Task<IApiCallDetails> TestConnectionAsync();
         Task<IApiCallDetails> IndexAsync<T>(T item, IndexDescriptor<T> indexDescriptor) where T : class;
         Task<IApiCallDetails> CreateIndexAsync(string indexname, CreateIndexDescriptor createIndexDescriptor);
         Task<IApiCallDetails> BulkAsync(BulkDescriptor BulkDescriptor);
