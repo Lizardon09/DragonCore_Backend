@@ -156,7 +156,30 @@ namespace DragonCore.API.Controllers
             {
                 var bulkQuery = new BulkQuery<Account>(AccountIndex);
 
-                bulkQuery.AddCollectionToSave(Accounts);
+                bulkQuery.AddCollectionToSave(Accounts, "AccountId");
+
+                var response = await _elasticClient.BulkAsync(bulkQuery.BulkDescriptor);
+
+                return (response.Success) ? Ok(response.DebugInformation) : BadRequest(response.OriginalException);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error Occured: " + ex);
+            }
+        }
+
+
+        [HttpGet]
+        [Route("DeleteManyDocuments")]
+        public async Task<IActionResult> DeleteManyDocuments()
+        {
+            try
+            {
+                var bulkQuery = new BulkQuery<Account>(AccountIndex);
+
+                bulkQuery.AddCollectionToDelete(Accounts);
+
+                typeof(Account).GetProperty("AccountId");
 
                 var response = await _elasticClient.BulkAsync(bulkQuery.BulkDescriptor);
 
