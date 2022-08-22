@@ -1,18 +1,18 @@
 using DragonCore.API.Extensions;
+using Elasticsearch.Net;
 using ElasticSearch.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Security.Cryptography.X509Certificates;
+using Nest;
+using BasicHelpers.Infrastructure.Extensions;
+using BasicHelpers.Infrastructure.Settings;
+using System.IO;
 
 namespace DragonCore.API
 {
@@ -32,9 +32,23 @@ namespace DragonCore.API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "DragonCore API", Version = "v1" });
             });
-            services.ConfigureCors();
+            services.ConfigureCors(Configuration);
             services.ConfigureControllers();
-            services.ConfigureElasticSearch(Environment.GetEnvironmentVariable("Elastic_URL"), Environment.GetEnvironmentVariable("Elastic_Default_Index"));
+
+            var elasticConnectionSettings = new ConnectionSettings(new Uri(
+                Configuration.GetSection("Elastic").GetSection("Elastic_URL").Get<string>()
+                ))
+                .DefaultIndex(Configuration.GetSection("Elastic").GetSection("Elastic_Default_Index").Get<string>())
+                .ServerCertificateValidationCallback(CertificateValidations.AuthorityIsRoot(new X509Certificate(Configuration.GetSection("Elastic").GetSection("Elastic_CA_Path").Get<string>())))
+                .BasicAuthentication(Configuration.GetSection("Elastic").GetSection("Elastic_User").Get<string>(), Configuration.GetSection("Elastic").GetSection("Elastic_Password").Get<string>());
+
+            services.ConfigureElasticSearch(elasticConnectionSettings.DisableDirectStreaming());
+
+            services.ConfigureBasicHelpers(
+                new BasicHelperSettings()
+                    .IOHelper()
+            );
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,7 +72,7 @@ namespace DragonCore.API
 
             app.UseAuthorization();
 
-            app.UseCors(Environment.GetEnvironmentVariable("CorsPolicy_Default"));
+            app.UseCors(Configuration.GetSection("CorsPolicy_Default").Get<string>());
 
             app.UseEndpoints(endpoints =>
             {

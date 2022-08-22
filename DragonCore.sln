@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30907.101
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32228.430
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonCore.API", "DragonCore.API\DragonCore.API.csproj", "{F36D69F9-C254-4888-A372-2EF827011FB3}"
 EndProject
@@ -13,7 +13,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ElasticSearch", "ElasticSea
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonCore.Domain", "DragonCore.Domain\DragonCore.Domain.csproj", "{800562CF-5693-400F-8E7C-FE1133BF534B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElasticSearch.Domain", "ElasticSearch.Domain\ElasticSearch.Domain.csproj", "{B7F24009-D5E2-4A43-B178-38825CAAC3F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElasticSearch.Domain", "ElasticSearch.Domain\ElasticSearch.Domain.csproj", "{B7F24009-D5E2-4A43-B178-38825CAAC3F1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BasicHelpers", "BasicHelpers", "{3CCE2B62-D124-48B8-AF1C-1777B43CA653}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasicHelpers.Infrastructure", "BasicHelpers.Infrastructure\BasicHelpers.Infrastructure.csproj", "{8AD12AA5-B745-45AB-A7A7-0A4932ABFD5C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,6 +41,10 @@ Global
 		{B7F24009-D5E2-4A43-B178-38825CAAC3F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7F24009-D5E2-4A43-B178-38825CAAC3F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B7F24009-D5E2-4A43-B178-38825CAAC3F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8AD12AA5-B745-45AB-A7A7-0A4932ABFD5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AD12AA5-B745-45AB-A7A7-0A4932ABFD5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AD12AA5-B745-45AB-A7A7-0A4932ABFD5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AD12AA5-B745-45AB-A7A7-0A4932ABFD5C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,6 +54,7 @@ Global
 		{1F682FFA-D478-4FA4-9419-A5A64CC72477} = {5EC03B38-A4F2-48B9-AF79-5519AA59A7D8}
 		{800562CF-5693-400F-8E7C-FE1133BF534B} = {060E2E86-A3C3-42C5-A3FA-0C775567AA7D}
 		{B7F24009-D5E2-4A43-B178-38825CAAC3F1} = {5EC03B38-A4F2-48B9-AF79-5519AA59A7D8}
+		{8AD12AA5-B745-45AB-A7A7-0A4932ABFD5C} = {3CCE2B62-D124-48B8-AF1C-1777B43CA653}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {210E85EB-1105-426A-9493-E2589795AC07}

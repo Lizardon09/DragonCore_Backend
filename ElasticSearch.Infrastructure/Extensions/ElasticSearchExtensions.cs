@@ -10,12 +10,9 @@ namespace ElasticSearch.Infrastructure.Extensions
 {
     public static class ElasticSearchExtensions
     {
-        public static void ConfigureElasticSearch(this IServiceCollection services, string elasticUrl, string elasticDefaultIndex)
+        public static void ConfigureElasticSearch(this IServiceCollection services, ConnectionSettings connectionSettings)
         {
-            var settings = new ConnectionSettings(new Uri(
-                elasticUrl
-                ))
-                .DefaultIndex(elasticDefaultIndex);
+            var settings = connectionSettings;
 
             settings.ThrowExceptions(alwaysThrow: true);
 
