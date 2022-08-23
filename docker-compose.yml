@@ -152,6 +152,33 @@ services:
          - ASPNETCORE_ENVIRONMENT=Development
          - ASPNETCORE_Kestrel__Certificates__Default__Password=Croagunk1!
          - ASPNETCORE_Kestrel__Certificates__Default__Path=certs/DragonCore.API.pfx
+         
+    dragoncoreSqL:
+        profiles: ["database"]
+        image: mcr.microsoft.com/mssql/server:${MSSQL_SERVER_VERSION}
+        container_name: "dragoncoreSql"
+        networks:
+            - dragoncore_backend_network
+        volumes:
+          - dragoncore_sql_data:/usr/share/mssql/data
+        ports:
+          - ${MSSQL_PORT}:1433
+        environment:
+          - ACCEPT_EULA=Y
+          - SA_PASSWORD=Croagunk1!
+        
+    dragoncorePostgres:
+        profiles: ["database"]
+        image: postgres:${POSTGRES_SERVER_VERSION}
+        container_name: "dragoncorePostgres"
+        networks:
+            - dragoncore_backend_network
+        volumes:
+          - dragoncore_postgres_data:/usr/share/postgres/data
+        ports:
+          - ${POSTGRES_PORT}:8080
+        environment:
+          - POSTGRES_PASSWORD=Croagunk1!
           
 volumes:
   dragoncore_certs:
@@ -166,6 +193,12 @@ volumes:
   dragoncoreKibana_data:
     driver: local
     name: dragoncoreKibana_data
+  dragoncore_sql_data:
+    driver: local
+    name: dragoncore_sql_data
+  dragoncore_postgres_data:
+    driver: local
+    name: dragoncore_postgres_data
 
 networks:
   dragoncore_backend_network:
