@@ -32,6 +32,11 @@ Dependencies:
 Serves to experiment with the implimentation idea of selective depency injection, with the collation of various general libraries/implimentations that have 
 multiple services.
 
+### DatabaseHelper
+
+Serves to facilitate and handle database communications with various database servers, by utilising Dapper as an
+ORM facilitator.
+
 ## Solution Docker-Files/Docker-Compose
 
 In addition to the project scopes, there is a provided docker compose setup for starting up a docker environment for a single cluster Elastic instance
