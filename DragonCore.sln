@@ -21,9 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasicHelpers.Infrastructure
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{D8DC4806-BD43-42F3-BF85-79F95BD39402}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseHelper.Domain", "DatabaseHelper\DatabaseHelper.Domain.csproj", "{A8685985-C71B-4778-97BD-FB1CC363D88B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseHelper.Domain", "DatabaseHelper.Domain\DatabaseHelper.Domain.csproj", "{A8685985-C71B-4778-97BD-FB1CC363D88B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseHelper.Infrastructure", "DatabaseHelper.Infrastructure\DatabaseHelper.Infrastructure.csproj", "{092ADAA5-562F-4B5E-B84A-79AB0D612950}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatabaseHelper.Infrastructure", "DatabaseHelper.Infrastructure\DatabaseHelper.Infrastructure.csproj", "{092ADAA5-562F-4B5E-B84A-79AB0D612950}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
