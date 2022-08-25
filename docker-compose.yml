@@ -3,6 +3,7 @@ version: "2.2"
 services:
     setup:
         image: docker.elastic.co/elasticsearch/elasticsearch:${ELASTIC_STACK_VERSION}
+        profiles: ["all", "elastic"]
         container_name: "dragoncore_backend_setup"
         volumes:
             - dragoncore_certs:/usr/share/elasticsearch/config/certs
@@ -54,7 +55,7 @@ services:
           retries: 120
           
     dragoncoreElastic:
-        profiles: ["elastic"]
+        profiles: ["all", "elastic"]
         depends_on:
             setup:
                 condition: service_healthy
@@ -99,7 +100,7 @@ services:
           retries: 120
           
     dragoncoreKibana:
-        profiles: ["elastic"]
+        profiles: ["all", "elastic"]
         depends_on:
             dragoncoreElastic:
                 condition: service_healthy
@@ -130,7 +131,7 @@ services:
           retries: 120
           
     dragoncoreBackend:
-        profiles: ["backend"]
+        profiles: ["all", "backend"]
         depends_on:
             dragoncoreKibana:
                 condition: service_healthy
@@ -154,7 +155,7 @@ services:
          - ASPNETCORE_Kestrel__Certificates__Default__Path=certs/DragonCore.API.pfx
          
     dragoncoreSqL:
-        profiles: ["database"]
+        profiles: ["all", "database"]
         image: mcr.microsoft.com/mssql/server:${MSSQL_SERVER_VERSION}
         container_name: "dragoncoreSql"
         networks:
@@ -168,7 +169,7 @@ services:
           - SA_PASSWORD=Croagunk1!
         
     dragoncorePostgres:
-        profiles: ["database"]
+        profiles: ["all", "database"]
         image: postgres:${POSTGRES_SERVER_VERSION}
         container_name: "dragoncorePostgres"
         networks:
