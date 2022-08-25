@@ -16,7 +16,7 @@ namespace DragonCore.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountController : Controller
+    public class ElasticAccountController : Controller
     {
         private readonly IElasticSearchService _elasticClient;
         private readonly Account TestAccount1;
@@ -24,11 +24,11 @@ namespace DragonCore.API.Controllers
         private readonly List<Account> Accounts;
         private readonly string AccountIndex = typeof(Account).Name.ToLowerInvariant();
 
-        public AccountController(IElasticSearchService elasticClient)
+        public ElasticAccountController(IElasticSearchService elasticClient)
         {
             _elasticClient = elasticClient;
             TestAccount1 = new Account() {
-                AccountId = 1,
+                Id = 1,
                 Name = "TestAccount1",
                 Surname = "TestAccount1Surname",
                 CellNumber = "0724404998",
@@ -39,7 +39,7 @@ namespace DragonCore.API.Controllers
 
             TestAccount2 = new Account()
             {
-                AccountId = 2,
+                Id = 2,
                 Name = "TestAccount2",
                 Surname = "TestAccount2Surname",
                 CellNumber = "0846500045",
@@ -53,13 +53,6 @@ namespace DragonCore.API.Controllers
                 TestAccount1,
                 TestAccount2
             };
-        }
-
-        [HttpGet]
-        [Route("GetTest")]
-        public IActionResult GetTest()
-        {
-            return Ok("Success " + AccountIndex);
         }
 
         [HttpGet]
@@ -136,7 +129,7 @@ namespace DragonCore.API.Controllers
             {
                 var indexQuery = new IndexQuery<Account>(AccountIndex);
                 
-                indexQuery.DocumentId(TestAccount1.AccountId);
+                indexQuery.DocumentId(TestAccount1.Id);
 
                 var response = await _elasticClient.IndexAsync(TestAccount1, indexQuery.IndexQueryDescripter);
 
@@ -197,7 +190,7 @@ namespace DragonCore.API.Controllers
         {
             try
             {
-                var updateQuery = new UpdateQuery<Account>(AccountIndex, TestAccount1.AccountId);
+                var updateQuery = new UpdateQuery<Account>(AccountIndex, TestAccount1.Id);
 
                 updateQuery.EnableDocAsUpsert();
                 updateQuery.EnableElasticShardRefresh();
