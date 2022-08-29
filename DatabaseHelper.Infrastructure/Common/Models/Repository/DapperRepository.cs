@@ -16,7 +16,7 @@ namespace DatabaseHelper.Infrastructure.Common.Models.Repository
     public class DapperRepository : IDapperRepository
     {
         private readonly IConnectionDB _connectionDB;
-        private string _baseConnectionName;
+        private string _baseConnectionName = string.Empty;
 
         public DapperRepository(IConnectionDB connectionDB)
         {
@@ -39,7 +39,7 @@ namespace DatabaseHelper.Infrastructure.Common.Models.Repository
 
                 var isSuccess = result is not null;
 
-                return isSuccess ? ResponseHelper.GetDapperHelperResponse(StatusResponse.SUCCESS, idResponse: id, entity: result) : ResponseHelper.GetDapperHelperResponse<TEntity>(StatusResponse.UNSUCCESSFUL, isSuccessful: false, idResponse: id);
+                return isSuccess ? ResponseHelper.GetDapperHelperResponse(StatusResponse.SUCCESS, idResponse: id, entity: result!) : ResponseHelper.GetDapperHelperResponse<TEntity>(StatusResponse.UNSUCCESSFUL, isSuccessful: false, idResponse: id);
             }
             catch (Exception ex)
             {

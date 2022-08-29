@@ -15,17 +15,16 @@ namespace DatabaseHelper.Infrastructure.Common.Models.Database
 {
     public class ConnectionDB : IConnectionDB
     {
-        private static List<IDatabaseAdapter> _databaseAdapters;
+        private static List<IDatabaseAdapter> _databaseAdapters = new List<IDatabaseAdapter>
+            {
+                {new PostgresDBAdapter()},
+                {new SQLServerAdapter()}
+            };
         private static Dictionary<string, ConnectionDetail> _connections = new Dictionary<string, ConnectionDetail>();
-
-        public ConnectionDB()
-        {
-            InsertDatabseAdapters();
-        }
 
         public IDbConnection DbConnection(string name)
         {
-            if (!_connections.TryGetValue(name, out ConnectionDetail connection))
+            if (!_connections.TryGetValue(name, out ConnectionDetail? connection))
             {
                 throw new Exception("Can not create db connection.");//sql exception
             }
@@ -40,19 +39,11 @@ namespace DatabaseHelper.Infrastructure.Common.Models.Database
             return adapter.DbConnection(connection.ConnectionString);
         }
 
-        private static IDatabaseAdapter GetDBAdapter(DatabaseAdapter databaseAdapter)
+        private static IDatabaseAdapter? GetDBAdapter(DatabaseAdapter databaseAdapter)
         {
             return _databaseAdapters.Where(x => x.DatabaseAdapter == databaseAdapter)?.FirstOrDefault();
         }
 
-        private static void InsertDatabseAdapters()
-        {
-            _databaseAdapters = new List<IDatabaseAdapter>
-            {
-                {new PostgresDBAdapter()},
-                {new SQLServerAdapter()}
-            };
-        }
         public static void RegisterConnections(List<ConnectionDetail> connections)
         {
 
