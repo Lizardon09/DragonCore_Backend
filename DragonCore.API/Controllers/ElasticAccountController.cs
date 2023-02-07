@@ -1,12 +1,8 @@
-﻿using BasicHelpers.Infrastructure.Services.Interfaces;
-using BasicHelpers.Infrastructure.Services.Models;
-using DragonCore.Domain.Models;
-using ElasticSearch.Domain.Models;
-using ElasticSearch.Domain.Models.QueryDescriptors;
-using ElasticSearch.Infrastructure.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
+﻿using DragonCore.Domain.Models;
+using ElasticSearchHelper.Domain.Models;
+using ElasticSearchHelper.Domain.Models.QueryDescriptors;
+using ElasticSearchHelper.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Nest;
 using System;
 using System.Collections.Generic;
 using System.Linq;

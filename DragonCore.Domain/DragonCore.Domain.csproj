@@ -1,16 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
     <Folder Include="Interfaces\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\ElasticSearch.Domain\ElasticSearch.Domain.csproj" />
-    <ProjectReference Include="..\ElasticSearch.Infrastructure\ElasticSearch.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
