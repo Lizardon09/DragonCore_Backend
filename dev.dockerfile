@@ -7,10 +7,6 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["./DragonCore.API/DragonCore.API.csproj", "DragonCore.API/"]
 COPY ["./DragonCore.Domain/DragonCore.Domain.csproj", "DragonCore.Domain/"]
-COPY ["./ElasticSearch.Infrastructure/ElasticSearch.Infrastructure.csproj", "ElasticSearch.Infrastructure/"]
-COPY ["./ElasticSearch.Domain/ElasticSearch.Domain.csproj", "ElasticSearch.Domain/"]
-COPY ["./DatabaseHelper.Domain/DatabaseHelper.Domain.csproj", "DatabaseHelper.Domain/"]
-COPY ["./DatabaseHelper.Infrastructure/DatabaseHelper.Infrastructure.csproj", "DatabaseHelper.Infrastructure/"]
 COPY ["./BasicHelpers.Infrastructure/BasicHelpers.Infrastructure.csproj", "BasicHelpers.Infrastructure/"]
 
 RUN dotnet dev-certs https --clean
