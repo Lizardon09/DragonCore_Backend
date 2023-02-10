@@ -1,6 +1,5 @@
 using DragonCore.API.Extensions;
 using Elasticsearch.Net;
-using ElasticSearch.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -12,7 +11,7 @@ using System.Security.Cryptography.X509Certificates;
 using Nest;
 using BasicHelpers.Infrastructure.Extensions;
 using BasicHelpers.Infrastructure.Settings;
-using System.IO;
+using ElasticSearchHelper.Infrastructure.Extensions;
 
 namespace DragonCore.API
 {

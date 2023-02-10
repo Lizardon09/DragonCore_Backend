@@ -3,6 +3,7 @@ version: "2.2"
 services:
     setup:
         image: docker.elastic.co/elasticsearch/elasticsearch:${ELASTIC_STACK_VERSION}
+        profiles: ["all", "elastic"]
         container_name: "dragoncore_backend_setup"
         volumes:
             - dragoncore_certs:/usr/share/elasticsearch/config/certs
@@ -54,7 +55,7 @@ services:
           retries: 120
           
     dragoncoreElastic:
-        profiles: ["elastic"]
+        profiles: ["all", "elastic"]
         depends_on:
             setup:
                 condition: service_healthy
@@ -99,7 +100,7 @@ services:
           retries: 120
           
     dragoncoreKibana:
-        profiles: ["elastic"]
+        profiles: ["all", "elastic"]
         depends_on:
             dragoncoreElastic:
                 condition: service_healthy
@@ -130,7 +131,7 @@ services:
           retries: 120
           
     dragoncoreBackend:
-        profiles: ["backend"]
+        profiles: ["all", "backend"]
         depends_on:
             dragoncoreKibana:
                 condition: service_healthy
@@ -152,6 +153,33 @@ services:
          - ASPNETCORE_ENVIRONMENT=Development
          - ASPNETCORE_Kestrel__Certificates__Default__Password=Croagunk1!
          - ASPNETCORE_Kestrel__Certificates__Default__Path=certs/DragonCore.API.pfx
+         
+    dragoncoreSqL:
+        profiles: ["all", "database"]
+        image: mcr.microsoft.com/mssql/server:${MSSQL_SERVER_VERSION}
+        container_name: "dragoncoreSql"
+        networks:
+            - dragoncore_backend_network
+        volumes:
+          - dragoncore_sql_data:/usr/share/mssql/data
+        ports:
+          - ${MSSQL_PORT}:1433
+        environment:
+          - ACCEPT_EULA=Y
+          - SA_PASSWORD=Croagunk1!
+        
+    dragoncorePostgres:
+        profiles: ["all", "database"]
+        image: postgres:${POSTGRES_SERVER_VERSION}
+        container_name: "dragoncorePostgres"
+        networks:
+            - dragoncore_backend_network
+        volumes:
+          - dragoncore_postgres_data:/usr/share/postgres/data
+        ports:
+          - ${POSTGRES_PORT}:8080
+        environment:
+          - POSTGRES_PASSWORD=Croagunk1!
           
 volumes:
   dragoncore_certs:
@@ -166,6 +194,12 @@ volumes:
   dragoncoreKibana_data:
     driver: local
     name: dragoncoreKibana_data
+  dragoncore_sql_data:
+    driver: local
+    name: dragoncore_sql_data
+  dragoncore_postgres_data:
+    driver: local
+    name: dragoncore_postgres_data
 
 networks:
   dragoncore_backend_network:

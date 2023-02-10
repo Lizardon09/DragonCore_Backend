@@ -1,9 +1,6 @@
-﻿using ElasticSearch.Infrastructure.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
+﻿using ElasticSearchHelper.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace DragonCore.API.Controllers
