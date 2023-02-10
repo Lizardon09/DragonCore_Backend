@@ -1,14 +1,13 @@
-FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
 
 WORKDIR /app
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 
 WORKDIR /src
 COPY ["./DragonCore.API/DragonCore.API.csproj", "DragonCore.API/"]
-COPY ["./ElasticSearch.Infrastructure/ElasticSearch.Infrastructure.csproj", "ElasticSearch.Infrastructure/"]
-COPY ["./ElasticSearch.Domain/ElasticSearch.Domain.csproj", "ElasticSearch.Domain/"]
 COPY ["./DragonCore.Domain/DragonCore.Domain.csproj", "DragonCore.Domain/"]
+COPY ["./BasicHelpers.Infrastructure/BasicHelpers.Infrastructure.csproj", "BasicHelpers.Infrastructure/"]
 
 RUN dotnet dev-certs https --clean
 RUN dotnet dev-certs https -ep devcerts/DragonCore.API.pfx -p Croagunk1!
