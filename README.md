@@ -9,33 +9,19 @@ Target Framework: .NET 6.0 <br />
 Dependencies:
   - Docker
   - Elastic
+  - DatabaseHelper (@Lizardon09)
+  - ElasticSearchHelper (@Lizardon09)
 
 ## Project Scopes:
 
 ### DragonCore
 
 Serves as an intermediary between custom libraries/implimentations to faciliate interaction with and potentially between them.
-
-### ElasticSearch
-
-Serves to experiment with the implimentation idea of utilizing the 'NEST' library to provide refined additonal high level assistance with setup and interactions 
-with an elastic instance for more casual users. It takes advantage of query based elastic requests provided by 'NEST', and breaks the aspects and building 
-blocks of the descriptors for those queries into manipulatable containers that can be used to define higher level logic and operations for casual interactions
-with elastic.
-
-Dependencies:
-  - NEST
-  - Elastic
   
 ### BasicHelpers
 
 Serves to experiment with the implimentation idea of selective depency injection, with the collation of various general libraries/implimentations that have 
 multiple services.
-
-### DatabaseHelper
-
-Serves to facilitate and handle database communications with various database servers, by utilising Dapper as an
-ORM facilitator.
 
 ## Solution Docker-Files/Docker-Compose
 
